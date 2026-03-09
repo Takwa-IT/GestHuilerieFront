@@ -1,0 +1,92 @@
+<nb-card class="hero-card">
+  <nb-card-body>
+    <div class="hero-content">
+      <div>
+        <p class="hero-subtitle">Tableau de bord Administrateur</p>
+        <h2>Supervision globale de la production</h2>
+        <p>Suivi multi-huileries, contrôle des accès et indicateurs de performance en temps réel.</p>
+      </div>
+      <div class="hero-chip">
+        <nb-icon icon="shield-outline"></nb-icon>
+        <span>Mode supervision</span>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<div class="dashboard-grid kpi-grid">
+  <nb-card *ngFor="let kpi of kpis" class="kpi-card">
+    <nb-card-body>
+      <div class="kpi-head">
+        <span>{{ kpi.label }}</span>
+        <nb-icon [icon]="kpi.icon"></nb-icon>
+      </div>
+      <div class="kpi-value">{{ kpi.value }}</div>
+      <div class="kpi-trend" [class.positive]="kpi.trend.startsWith('+')" [class.negative]="kpi.trend.startsWith('-')">
+        {{ kpi.trend }} vs semaine passée
+      </div>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<div class="dashboard-grid two-columns">
+  <nb-card>
+    <nb-card-header>Trend rendement hebdomadaire</nb-card-header>
+    <nb-card-body>
+      <div echarts [options]="rendementTrendOptions" class="chart-host"></div>
+    </nb-card-body>
+  </nb-card>
+
+  <nb-card>
+    <nb-card-header>Distribution qualité lots</nb-card-header>
+    <nb-card-body>
+      <div echarts [options]="qualityPieOptions" class="chart-host"></div>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<div class="dashboard-grid two-columns">
+  <nb-card>
+    <nb-card-header>Comparatif des huileries</nb-card-header>
+    <nb-card-body>
+      <div class="table-like">
+        <div class="row header">
+          <span>Huilerie</span>
+          <span>Production</span>
+          <span>Rendement</span>
+          <span>Qualité</span>
+        </div>
+        <div class="row" *ngFor="let h of huileries">
+          <span>{{ h.name }}</span>
+          <span>{{ h.prod }}</span>
+          <span>{{ h.rendement }}</span>
+          <span class="badge">{{ h.qualite }}</span>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+
+  <nb-card>
+    <nb-card-header>État de santé des machines</nb-card-header>
+    <nb-card-body>
+      <div class="progress-list">
+        <div class="progress-item" *ngFor="let item of machineHealth">
+          <div class="progress-top">
+            <span>{{ item.name }}</span>
+            <strong>{{ item.value }}%</strong>
+          </div>
+          <nb-progress-bar [value]="item.value" status="primary"></nb-progress-bar>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<nb-card>
+  <nb-card-header>Activités récentes</nb-card-header>
+  <nb-card-body>
+    <nb-list>
+      <nb-list-item *ngFor="let item of activities">{{ item }}</nb-list-item>
+    </nb-list>
+  </nb-card-body>
+</nb-card>

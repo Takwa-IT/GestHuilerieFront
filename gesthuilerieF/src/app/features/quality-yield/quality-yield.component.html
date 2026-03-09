@@ -1,0 +1,18 @@
+<nb-card>
+  <nb-card-header>Qualité & Rendement</nb-card-header>
+  <nb-card-body>
+    <div class="grid">
+      <div class="stat" *ngFor="let k of kpis">
+        <div class="label">{{ k.label }}</div>
+        <div class="value">{{ k.value }}</div>
+      </div>
+    </div>
+
+    <div class="table">
+      <div class="row head"><span>Lot</span><span>Rendement</span><span>Acidité</span><span>Qualité</span></div>
+      <div class="row" *ngFor="let item of rows">
+        <span>{{ item.lot }}</span><span>{{ item.rendement }}</span><span>{{ item.acidite }}</span><span>{{ item.qualite }}</span>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

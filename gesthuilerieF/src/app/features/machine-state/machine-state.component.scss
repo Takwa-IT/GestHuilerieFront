@@ -1,0 +1,16 @@
+.machine {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--separator);
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.meta {
+  font-size: 0.8rem;
+  opacity: 0.75;
+}

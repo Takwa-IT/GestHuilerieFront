@@ -1,0 +1,11 @@
+<nb-card>
+  <nb-card-header>Comptes, Profils & Privilèges</nb-card-header>
+  <nb-card-body>
+    <div class="table">
+      <div class="row head"><span>Utilisateur</span><span>Rôle</span><span>Profil</span><span>Privilèges</span></div>
+      <div class="row" *ngFor="let u of users">
+        <span>{{ u.name }}</span><span>{{ u.role }}</span><span>{{ u.profile }}</span><span>{{ u.privileges }}</span>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

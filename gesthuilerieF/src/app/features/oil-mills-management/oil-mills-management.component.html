@@ -1,0 +1,11 @@
+<nb-card>
+  <nb-card-header>Gestion des Huileries</nb-card-header>
+  <nb-card-body>
+    <div class="table">
+      <div class="row head"><span>Huilerie</span><span>Entreprise</span><span>Capacité/J</span><span>Statut</span></div>
+      <div class="row" *ngFor="let h of mills">
+        <span>{{ h.name }}</span><span>{{ h.company }}</span><span>{{ h.capacity }}</span><span>{{ h.status }}</span>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

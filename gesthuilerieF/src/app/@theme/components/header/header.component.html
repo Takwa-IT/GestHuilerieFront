@@ -1,0 +1,22 @@
+<div class="header-container">
+  <div class="left">
+    <button nbButton ghost status="basic" (click)="toggleSidebar()" aria-label="Menu">
+      <nb-icon icon="menu-2-outline"></nb-icon>
+    </button>
+    <div class="brand">
+      <nb-icon icon="droplet-outline"></nb-icon>
+      <span>Huilerie Smart Production</span>
+    </div>
+  </div>
+
+  <div class="right">
+    <nb-select size="small" [(selected)]="currentTheme" (selectedChange)="changeTheme($event)">
+      <nb-option value="default">Default</nb-option>
+      <nb-option value="dark">Dark</nb-option>
+      <nb-option value="cosmic">Cosmic</nb-option>
+      <nb-option value="corporate">Corporate</nb-option>
+    </nb-select>
+
+    <nb-user name="Responsable" title="Production"></nb-user>
+  </div>
+</div>

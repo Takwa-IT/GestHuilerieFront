@@ -1,0 +1,11 @@
+<nb-card>
+  <nb-card-header>Traçabilité des Lots (QR)</nb-card-header>
+  <nb-card-body>
+    <div class="table">
+      <div class="row head"><span>Lot</span><span>QR</span><span>Étape</span><span>Destination</span><span>Horodatage</span></div>
+      <div class="row" *ngFor="let l of lots">
+        <span>{{ l.lot }}</span><span>{{ l.qr }}</span><span>{{ l.stage }}</span><span>{{ l.destination }}</span><span>{{ l.time }}</span>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

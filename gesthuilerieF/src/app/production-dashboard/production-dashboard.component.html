@@ -1,0 +1,87 @@
+<nb-card class="hero-card">
+  <nb-card-body>
+    <div class="hero-content">
+      <div>
+        <p class="hero-subtitle">Responsable Production</p>
+        <h2>Pilotage de l'extraction en temps réel</h2>
+        <p>Suivi des lots, performance machines et préparation des données pour le module IA.</p>
+      </div>
+      <div class="hero-indicator">
+        <span>Préparation Data IA</span>
+        <strong>{{ aiReadiness }}%</strong>
+      </div>
+    </div>
+    <nb-progress-bar [value]="aiReadiness" status="primary"></nb-progress-bar>
+  </nb-card-body>
+</nb-card>
+
+<div class="dashboard-grid kpi-grid">
+  <nb-card *ngFor="let item of productionCards" class="kpi-card">
+    <nb-card-body>
+      <div class="kpi-label">{{ item.label }}</div>
+      <div class="kpi-value">{{ item.value }}</div>
+      <div class="kpi-extra">{{ item.extra }}</div>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<div class="dashboard-grid two-columns">
+  <nb-card>
+    <nb-card-header>Extraction horaire (tonnes)</nb-card-header>
+    <nb-card-body>
+      <div echarts [options]="hourlyExtractionOptions" class="chart-host"></div>
+    </nb-card-body>
+  </nb-card>
+
+  <nb-card>
+    <nb-card-header>Performance par étape</nb-card-header>
+    <nb-card-body>
+      <div echarts [options]="processPerformanceOptions" class="chart-host"></div>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<div class="dashboard-grid two-columns">
+  <nb-card>
+    <nb-card-header>Opérations en cours</nb-card-header>
+    <nb-card-body>
+      <div class="ops-list">
+        <div class="op-row" *ngFor="let op of operations">
+          <div>
+            <div class="op-name">{{ op.name }}</div>
+            <div class="op-line">{{ op.line }}</div>
+          </div>
+          <span class="status" [ngClass]="getStatusClass(op.status)">{{ op.status }}</span>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+
+  <nb-card>
+    <nb-card-header>Charge machines</nb-card-header>
+    <nb-card-body>
+      <div class="progress-list">
+        <div class="progress-item" *ngFor="let m of machineLoad">
+          <div class="progress-top">
+            <span>{{ m.machine }}</span>
+            <strong>{{ m.load }}%</strong>
+          </div>
+          <nb-progress-bar [value]="m.load" status="primary"></nb-progress-bar>
+        </div>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<nb-card>
+  <nb-card-header>Paramètres qualité chimique</nb-card-header>
+  <nb-card-body>
+    <div class="quality-grid">
+      <div class="quality-item" *ngFor="let q of qualityParams">
+        <div class="q-label">{{ q.label }}</div>
+        <div class="q-value">{{ q.value }}</div>
+        <div class="q-target">Cible: {{ q.target }}</div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

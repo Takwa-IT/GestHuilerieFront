@@ -1,0 +1,24 @@
+.step {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--separator);
+}
+
+.name {
+  font-weight: 700;
+}
+
+.desc {
+  font-size: 0.82rem;
+  opacity: 0.75;
+}
+
+.status {
+  font-size: 0.8rem;
+  background: rgba(126, 148, 64, 0.18);
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  color: var(--color-primary-800);
+}

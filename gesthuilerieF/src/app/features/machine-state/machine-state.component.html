@@ -1,0 +1,10 @@
+<nb-card>
+  <nb-card-header>État Machines</nb-card-header>
+  <nb-card-body>
+    <div class="machine" *ngFor="let m of machines">
+      <div class="top"><span>{{ m.name }}</span><strong>{{ m.health }}%</strong></div>
+      <nb-progress-bar [value]="m.health" status="primary"></nb-progress-bar>
+      <div class="meta">Statut: {{ m.status }} · Dernière maintenance: {{ m.maintenance }}</div>
+    </div>
+  </nb-card-body>
+</nb-card>

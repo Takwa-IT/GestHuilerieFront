@@ -1,0 +1,33 @@
+@use '@nebular/theme/styles/theming' as *;
+@use '@nebular/theme/styles/themes/default' as *;
+@use '@nebular/theme/styles/globals' as *;
+
+$nb-themes: nb-register-theme((
+	color-primary-100: #eef4e2,
+	color-primary-200: #dce8c5,
+	color-primary-300: #c4d69e,
+	color-primary-400: #aec378,
+	color-primary-500: #95ad4f,
+	color-primary-600: #7e9440,
+	color-primary-700: #687b32,
+	color-primary-800: #556527,
+	color-primary-900: #43501e,
+	color-primary-default: #7e9440,
+	color-primary-focus: #687b32,
+	color-primary-hover: #95ad4f,
+	color-primary-active: #556527,
+), default, default);
+
+@include nb-install() {
+	@include nb-theme-global();
+}
+
+html,
+body {
+	min-height: 100%;
+}
+
+body {
+	margin: 0;
+	background-color: #f8faf4;
+}

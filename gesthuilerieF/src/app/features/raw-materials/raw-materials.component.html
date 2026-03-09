@@ -1,0 +1,11 @@
+<nb-card>
+  <nb-card-header>Matières Premières & Paramètres Chimiques</nb-card-header>
+  <nb-card-body>
+    <div class="table">
+      <div class="row head"><span>Lot MP</span><span>Fournisseur</span><span>Acidité</span><span>Humidité</span><span>Machine affectée</span></div>
+      <div class="row" *ngFor="let r of raws">
+        <span>{{ r.lot }}</span><span>{{ r.supplier }}</span><span>{{ r.acidity }}</span><span>{{ r.humidity }}</span><span>{{ r.machine }}</span>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

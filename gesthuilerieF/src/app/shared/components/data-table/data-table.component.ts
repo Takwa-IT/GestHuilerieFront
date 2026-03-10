@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { NgIf, NgFor } from '@angular/common';
 
 export interface DataTableColumn {
   key: string;
@@ -6,9 +7,11 @@ export interface DataTableColumn {
 }
 
 @Component({
-  selector: 'app-data-table',
-  templateUrl: './data-table.component.html',
-  styleUrls: ['./data-table.component.scss'],
+    selector: 'app-data-table',
+    templateUrl: './data-table.component.html',
+    styleUrls: ['./data-table.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgFor],
 })
 export class DataTableComponent {
   @Input() columns: DataTableColumn[] = [];

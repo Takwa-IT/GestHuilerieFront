@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
+import { NbCardModule } from '@nebular/theme';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-user-accounts',
-  templateUrl: './user-accounts.component.html',
-  styleUrls: ['./user-accounts.component.scss'],
+    selector: 'app-user-accounts',
+    templateUrl: './user-accounts.component.html',
+    styleUrls: ['./user-accounts.component.scss'],
+    standalone: true,
+    imports: [NbCardModule, NgFor],
 })
 export class UserAccountsComponent {
   users = [

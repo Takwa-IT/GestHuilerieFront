@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { DataTableColumn } from '../../../../shared/components/data-table/data-table.component';
+import { DataTableColumn, DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
+import { NbCardModule } from '@nebular/theme';
 
 @Component({
-  selector: 'app-weighing-stock',
-  templateUrl: './weighing-stock.component.html',
-  styleUrls: ['./weighing-stock.component.scss'],
+    selector: 'app-weighing-stock',
+    templateUrl: './weighing-stock.component.html',
+    styleUrls: ['./weighing-stock.component.scss'],
+    standalone: true,
+    imports: [NbCardModule, DataTableComponent],
 })
 export class WeighingStockComponent {
   columns: DataTableColumn[] = [

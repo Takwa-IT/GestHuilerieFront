@@ -1,9 +1,20 @@
 import { Component } from '@angular/core';
+import { NbCardModule, NbProgressBarModule } from '@nebular/theme';
+import { NgFor, NgClass } from '@angular/common';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @Component({
-  selector: 'app-production-dashboard',
-  templateUrl: './production-dashboard.component.html',
-  styleUrls: ['./production-dashboard.component.scss'],
+    selector: 'app-production-dashboard',
+    templateUrl: './production-dashboard.component.html',
+    styleUrls: ['./production-dashboard.component.scss'],
+    standalone: true,
+    imports: [
+        NbCardModule,
+        NbProgressBarModule,
+        NgFor,
+        NgxEchartsModule,
+        NgClass,
+    ],
 })
 export class ProductionDashboardComponent {
   productionCards = [

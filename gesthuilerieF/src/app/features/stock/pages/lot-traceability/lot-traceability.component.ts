@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
+import { NbCardModule } from '@nebular/theme';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-lot-traceability',
-  templateUrl: './lot-traceability.component.html',
-  styleUrls: ['./lot-traceability.component.scss'],
+    selector: 'app-lot-traceability',
+    templateUrl: './lot-traceability.component.html',
+    styleUrls: ['./lot-traceability.component.scss'],
+    standalone: true,
+    imports: [NbCardModule, NgFor],
 })
 export class LotTraceabilityComponent {
   lots = [

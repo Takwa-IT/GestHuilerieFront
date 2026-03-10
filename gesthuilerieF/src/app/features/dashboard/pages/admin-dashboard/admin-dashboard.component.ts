@@ -1,9 +1,21 @@
 import { Component } from '@angular/core';
+import { NbCardModule, NbIconModule, NbProgressBarModule, NbListModule } from '@nebular/theme';
+import { NgFor } from '@angular/common';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @Component({
-  selector: 'app-admin-dashboard',
-  templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['./admin-dashboard.component.scss'],
+    selector: 'app-admin-dashboard',
+    templateUrl: './admin-dashboard.component.html',
+    styleUrls: ['./admin-dashboard.component.scss'],
+    standalone: true,
+    imports: [
+        NbCardModule,
+        NbIconModule,
+        NgFor,
+        NgxEchartsModule,
+        NbProgressBarModule,
+        NbListModule,
+    ],
 })
 export class AdminDashboardComponent {
   kpis = [

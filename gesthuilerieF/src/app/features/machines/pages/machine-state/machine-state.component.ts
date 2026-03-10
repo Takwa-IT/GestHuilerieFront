@@ -1,9 +1,17 @@
 import { Component } from '@angular/core';
+import { NbCardModule, NbProgressBarModule } from '@nebular/theme';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-machine-state',
-  templateUrl: './machine-state.component.html',
-  styleUrls: ['./machine-state.component.scss'],
+    selector: 'app-machine-state',
+    templateUrl: './machine-state.component.html',
+    styleUrls: ['./machine-state.component.scss'],
+    standalone: true,
+    imports: [
+        NbCardModule,
+        NgFor,
+        NbProgressBarModule,
+    ],
 })
 export class MachineStateComponent {
   machines = [

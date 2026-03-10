@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
+import { NbCardModule } from '@nebular/theme';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-production-guides',
-  templateUrl: './production-guides.component.html',
-  styleUrls: ['./production-guides.component.scss'],
+    selector: 'app-production-guides',
+    templateUrl: './production-guides.component.html',
+    styleUrls: ['./production-guides.component.scss'],
+    standalone: true,
+    imports: [NbCardModule, NgFor],
 })
 export class ProductionGuidesComponent {
   steps = [

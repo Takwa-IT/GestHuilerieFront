@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { DataTableColumn } from '../../../../shared/components/data-table/data-table.component';
+import { DataTableColumn, DataTableComponent } from '../../../../shared/components/data-table/data-table.component';
+import { NbCardModule } from '@nebular/theme';
 
 @Component({
-  selector: 'app-raw-materials',
-  templateUrl: './raw-materials.component.html',
-  styleUrls: ['./raw-materials.component.scss'],
+    selector: 'app-raw-materials',
+    templateUrl: './raw-materials.component.html',
+    styleUrls: ['./raw-materials.component.scss'],
+    standalone: true,
+    imports: [NbCardModule, DataTableComponent],
 })
 export class RawMaterialsComponent {
   columns: DataTableColumn[] = [

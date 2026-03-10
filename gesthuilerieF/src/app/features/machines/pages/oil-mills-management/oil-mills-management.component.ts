@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
+import { NbCardModule } from '@nebular/theme';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-oil-mills-management',
-  templateUrl: './oil-mills-management.component.html',
-  styleUrls: ['./oil-mills-management.component.scss'],
+    selector: 'app-oil-mills-management',
+    templateUrl: './oil-mills-management.component.html',
+    styleUrls: ['./oil-mills-management.component.scss'],
+    standalone: true,
+    imports: [NbCardModule, NgFor],
 })
 export class OilMillsManagementComponent {
   mills = [

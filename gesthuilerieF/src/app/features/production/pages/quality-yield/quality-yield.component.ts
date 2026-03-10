@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
+import { NbCardModule } from '@nebular/theme';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-quality-yield',
-  templateUrl: './quality-yield.component.html',
-  styleUrls: ['./quality-yield.component.scss'],
+    selector: 'app-quality-yield',
+    templateUrl: './quality-yield.component.html',
+    styleUrls: ['./quality-yield.component.scss'],
+    standalone: true,
+    imports: [NbCardModule, NgFor],
 })
 export class QualityYieldComponent {
   kpis = [

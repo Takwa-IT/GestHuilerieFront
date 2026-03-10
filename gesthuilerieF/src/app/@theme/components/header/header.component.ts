@@ -1,10 +1,19 @@
 import { Component } from '@angular/core';
-import { NbSidebarService, NbThemeService } from '@nebular/theme';
+import { NbSidebarService, NbThemeService, NbButtonModule, NbIconModule, NbSelectModule, NbOptionModule, NbActionsModule, NbContextMenuModule } from '@nebular/theme';
 
 @Component({
-  selector: 'ngx-header',
-  styleUrls: ['./header.component.scss'],
-  templateUrl: './header.component.html',
+    selector: 'ngx-header',
+    styleUrls: ['./header.component.scss'],
+    templateUrl: './header.component.html',
+    standalone: true,
+    imports: [
+        NbButtonModule,
+        NbIconModule,
+        NbSelectModule,
+        NbOptionModule,
+        NbActionsModule,
+        NbContextMenuModule,
+    ],
 })
 export class HeaderComponent {
   currentTheme = 'default';

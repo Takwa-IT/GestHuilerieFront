@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import {
   NbActionsModule,
   NbButtonModule,
@@ -14,6 +15,8 @@ import {
 
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { SidebarMenuComponent } from './components/sidebar/sidebar-menu.component';
 import { OneColumnLayoutComponent } from './layouts/one-column/one-column.layout';
 
 const NB_MODULES = [
@@ -28,11 +31,11 @@ const NB_MODULES = [
   NbIconModule,
 ];
 
-const COMPONENTS = [HeaderComponent, FooterComponent, OneColumnLayoutComponent];
+const COMPONENTS = [HeaderComponent, FooterComponent, SidebarComponent, SidebarMenuComponent, OneColumnLayoutComponent];
 
 @NgModule({
-  imports: [CommonModule, ...NB_MODULES],
-  exports: [CommonModule, ...NB_MODULES, ...COMPONENTS],
+  imports: [CommonModule, RouterModule, ...NB_MODULES],
+  exports: [CommonModule, RouterModule, ...NB_MODULES, ...COMPONENTS],
   declarations: [...COMPONENTS],
 })
 export class ThemeModule {

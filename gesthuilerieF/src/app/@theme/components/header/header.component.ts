@@ -8,7 +8,7 @@ import { NbSidebarService, NbThemeService } from '@nebular/theme';
 })
 export class HeaderComponent {
   currentTheme = 'default';
-  userMenu = [{ title: 'Profil' }, { title: 'Déconnexion' }];
+  userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
 
   constructor(private sidebarService: NbSidebarService, private themeService: NbThemeService) {}
 

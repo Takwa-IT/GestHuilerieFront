@@ -1,0 +1,9 @@
+<div class="table" *ngIf="columns.length" [style.--columns]="columns.length">
+  <div class="row head">
+    <span *ngFor="let column of columns">{{ column.label }}</span>
+  </div>
+
+  <div class="row" *ngFor="let row of rows">
+    <span *ngFor="let column of columns">{{ row[column.key] }}</span>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminDashboardComponent } from '../../admin-dashboard/admin-dashboard.component';
-import { ProductionDashboardComponent } from '../../production-dashboard/production-dashboard.component';
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+import { ProductionDashboardComponent } from './pages/production-dashboard/production-dashboard.component';
 
 const routes: Routes = [
   { path: 'production', component: ProductionDashboardComponent },

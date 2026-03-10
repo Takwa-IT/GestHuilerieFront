@@ -14,12 +14,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Pesée & Stocks',
     icon: 'cube-outline',
-    link: '/pages/production/weighing-stock',
+    link: '/pages/stock/weighing',
   },
   {
     title: 'Matières Premières',
     icon: 'archive-outline',
-    link: '/pages/production/raw-materials',
+    link: '/pages/raw-material',
   },
   {
     title: 'Guides de Production',
@@ -29,7 +29,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Traçabilité des Lots',
     icon: 'pricetags-outline',
-    link: '/pages/production/traceability',
+    link: '/pages/stock/traceability',
   },
   {
     title: 'Données IA',
@@ -38,12 +38,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Qualité & Rendement',
     icon: 'bar-chart-2-outline',
-    link: '/pages/analytics/quality-yield',
+    link: '/pages/production/quality',
   },
   {
     title: 'État Machines',
     icon: 'hard-drive-outline',
-    link: '/pages/analytics/machine-state',
+    link: '/pages/machines/state',
   },
   {
     title: 'Administrateur',
@@ -57,11 +57,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Gestion des Huileries',
     icon: 'home-outline',
-    link: '/pages/admin/oil-mills',
+    link: '/pages/machines/management',
   },
   {
     title: 'Comptes / Profils / Privilèges',
     icon: 'people-outline',
-    link: '/pages/admin/users-profiles-privileges',
+    link: '/pages/users',
   },
 ];

@@ -23,7 +23,6 @@ import * as echarts from 'echarts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ThemeModule } from './@theme/theme.module';
-import { PagesModule } from './pages/pages.module';
 import { CoreModule } from './core/core.module';
 
 @NgModule({
@@ -51,7 +50,6 @@ import { CoreModule } from './core/core.module';
     NgxEchartsModule.forRoot({ echarts }),
     CoreModule,
     ThemeModule,
-    PagesModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

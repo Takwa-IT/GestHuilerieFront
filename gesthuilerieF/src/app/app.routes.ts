@@ -3,6 +3,14 @@ import { SidebarComponent } from './@theme/components/sidebar/sidebar.component'
 
 export const APP_ROUTES: Routes = [
   {
+    path: 'login',
+    loadComponent: () => import('./features/auth/pages/login/login.component').then(c => c.LoginComponent),
+  },
+  {
+    path: 'signup',
+    loadComponent: () => import('./features/auth/pages/signup/signup.component').then(c => c.SignupComponent),
+  },
+  {
     path: 'pages',
     component: SidebarComponent,
     children: [

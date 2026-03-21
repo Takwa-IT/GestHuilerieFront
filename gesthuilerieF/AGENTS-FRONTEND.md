@@ -35,6 +35,7 @@ This project follows a clean Angular structure:
    │      components réutilisables
    │
    └── Features
+          pages+ models+ services
 
          
 core Contient ce qui doit exister une seule fois.

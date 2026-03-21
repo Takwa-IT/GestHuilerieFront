@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NbCardModule, NbProgressBarModule } from '@nebular/theme';
 import { NgFor } from '@angular/common';
+import { Machine } from '../../models/enterprise.models';
+import { MachineService } from '../../services/machine.service';
 
 @Component({
     selector: 'app-machine-state',
@@ -13,11 +15,41 @@ import { NgFor } from '@angular/common';
         NbProgressBarModule,
     ],
 })
-export class MachineStateComponent {
-  machines = [
-    { name: 'Presse P-01', health: 84, status: 'En service', maintenance: '03/03/2026' },
-    { name: 'Décanteur D-02', health: 72, status: 'Surveillance', maintenance: '01/03/2026' },
-    { name: 'Centrifugeuse C-02', health: 63, status: 'Maintenance planifiée', maintenance: '08/03/2026' },
-    { name: 'Filtre F-03', health: 90, status: 'En service', maintenance: '05/03/2026' },
-  ];
+export class MachineStateComponent implements OnInit {
+  machines: Array<Machine & { health: number; maintenance: string }> = [];
+
+  constructor(private machineService: MachineService) {}
+
+  ngOnInit(): void {
+    this.machineService.getMock().subscribe(data => {
+      this.machines = data.map((machine, index) => ({
+        ...machine,
+        health: [84, 72, 63, 90][index] ?? 78,
+        maintenance: ['03/03/2026', '01/03/2026', '08/03/2026', '05/03/2026'][index] ?? '07/03/2026',
+      }));
+    });
+  }
+
+  getStatusLabel(status: string): string {
+    if (status === 'EN_SERVICE') {
+      return 'En service';
+    }
+    if (status === 'SURVEILLANCE') {
+      return 'Surveillance';
+    }
+    if (status === 'MAINTENANCE') {
+      return 'Maintenance planifiee';
+    }
+    return status;
+  }
+
+  getStatusClass(status: string): string {
+    if (status === 'EN_SERVICE') {
+      return 'ok';
+    }
+    if (status === 'SURVEILLANCE') {
+      return 'warn';
+    }
+    return 'critical';
+  }
 }

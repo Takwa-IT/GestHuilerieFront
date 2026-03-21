@@ -1,10 +1,21 @@
 <nb-card>
-  <nb-card-header>État Machines</nb-card-header>
+  <nb-card-header>Gestion des Machines - Vue Responsable Production</nb-card-header>
   <nb-card-body>
     <div class="machine" *ngFor="let m of machines">
-      <div class="top"><span>{{ m.name }}</span><strong>{{ m.health }}%</strong></div>
+      <div class="top">
+        <span>{{ m.nomMachine }}</span>
+        <strong>{{ m.health }}%</strong>
+      </div>
       <nb-progress-bar [value]="m.health" status="primary"></nb-progress-bar>
-      <div class="meta">Statut: {{ m.status }} · Dernière maintenance: {{ m.maintenance }}</div>
+      <div class="meta">
+        <span class="badge" [class]="getStatusClass(m.etatMachine)">{{ getStatusLabel(m.etatMachine) }}</span>
+        <span>Derniere maintenance: {{ m.maintenance }}</span>
+      </div>
+    </div>
+
+    <div class="api-example">
+      <h4>Exemple API consultation etat machines</h4>
+      <p>GET http://localhost:8069/api/machines</p>
     </div>
   </nb-card-body>
 </nb-card>

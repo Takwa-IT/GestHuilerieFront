@@ -1,0 +1,31 @@
+<mat-card class="olive-card">
+  <mat-card-header>
+    <mat-card-title>Machines - Etat et disponibilite</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="actions">
+      <a mat-stroked-button [routerLink]="['/pages/machines/form']">Filtres</a>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Machine</th>
+            <th>Etat</th>
+            <th>Capacite</th>
+            <th>Availability</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let machine of machines">
+            <td>{{ machine.nomMachine }}</td>
+            <td><span class="badge" [ngClass]="statusClass(machine.etatMachine)">{{ statusLabel(machine.etatMachine) }}</span></td>
+            <td>{{ machine.capacite }}</td>
+            <td><span class="badge" [ngClass]="availabilityClass(machine.availability)">{{ machine.availability }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card-content>
+</mat-card>

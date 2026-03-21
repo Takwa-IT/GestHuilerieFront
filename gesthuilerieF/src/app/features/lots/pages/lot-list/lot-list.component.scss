@@ -1,0 +1,40 @@
+.table-wrap {
+  overflow-x: auto;
+}
+
+.lot-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.6rem 0.45rem;
+    border-bottom: 1px solid var(--separator);
+    white-space: nowrap;
+  }
+
+  th {
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.72;
+  }
+}
+
+.lot-details-btn {
+  --button-filled-primary-background-color: var(--color-primary-500);
+  --button-filled-primary-border-color: var(--color-primary-500);
+  --button-filled-primary-hover-background-color: var(--color-primary-600);
+  --button-filled-primary-hover-border-color: var(--color-primary-600);
+  --button-filled-primary-text-color: #fff;
+
+  background-color: var(--color-primary-500) !important;
+  border-color: var(--color-primary-500) !important;
+  color: #fff !important;
+}
+
+.lot-details-btn:hover {
+  background-color: var(--color-primary-600) !important;
+  border-color: var(--color-primary-600) !important;
+}

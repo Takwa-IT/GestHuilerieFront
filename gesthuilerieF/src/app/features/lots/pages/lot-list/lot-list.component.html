@@ -1,0 +1,31 @@
+<nb-card>
+  <nb-card-header>Liste des lots d'olives</nb-card-header>
+  <nb-card-body>
+    <div class="table-wrap">
+      <table class="lot-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Variete</th>
+            <th>Origine</th>
+            <th>Quantite initiale</th>
+            <th>Quantite restante</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let lot of lots">
+            <td>{{ lot.idLot }}</td>
+            <td>{{ lot.varieteOlive }}</td>
+            <td>{{ lot.origine }}</td>
+            <td>{{ lot.quantiteInitiale }} kg</td>
+            <td>{{ lot.quantiteRestante }} kg</td>
+            <td>
+              <a nbButton status="primary" size="small" class="lot-details-btn" [routerLink]="['/pages/lots', lot.idLot]">Voir details</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </nb-card-body>
+</nb-card>

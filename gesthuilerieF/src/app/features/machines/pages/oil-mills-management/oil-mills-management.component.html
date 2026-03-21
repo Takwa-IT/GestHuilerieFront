@@ -1,11 +1,160 @@
-<nb-card>
+<nb-card class="section-card">
   <nb-card-header>Gestion des Huileries</nb-card-header>
   <nb-card-body>
-    <div class="table">
-      <div class="row head"><span>Huilerie</span><span>Entreprise</span><span>Capacité/J</span><span>Statut</span></div>
-      <div class="row" *ngFor="let h of mills">
-        <span>{{ h.name }}</span><span>{{ h.company }}</span><span>{{ h.capacity }}</span><span>{{ h.status }}</span>
+    <form class="entity-form" [formGroup]="huilerieForm" (ngSubmit)="submitHuilerie()">
+      <div class="form-group">
+        <label class="form-label">Nom *</label>
+        <input nbInput fullWidth formControlName="nom" placeholder="Nom de l'huilerie" />
       </div>
+
+      <div class="form-group">
+        <label class="form-label">Localisation *</label>
+        <input nbInput fullWidth formControlName="localisation" placeholder="Localisation" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Type *</label>
+        <input nbInput fullWidth formControlName="type" placeholder="Type" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Certification *</label>
+        <input nbInput fullWidth formControlName="certification" placeholder="Certification" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Capacite de production (kg/j) *</label>
+        <input nbInput fullWidth type="number" formControlName="capaciteProduction" placeholder="0" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Entreprise ID *</label>
+        <input nbInput fullWidth type="number" formControlName="entrepriseId" placeholder="1" />
+      </div>
+
+      <div class="form-actions">
+        <button nbButton status="primary" type="submit">
+          {{ editingHuilerieId ? 'Mettre a jour huilerie' : 'Creer huilerie' }}
+        </button>
+        <button *ngIf="editingHuilerieId" nbButton status="basic" outline type="button" (click)="resetHuilerieForm()">Annuler</button>
+      </div>
+    </form>
+
+    <div class="table-wrap">
+      <table class="crud-table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Localisation</th>
+            <th>Type</th>
+            <th>Certification</th>
+            <th>Capacite</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let h of huileries">
+            <td>{{ h.nom }}</td>
+            <td>{{ h.localisation }}</td>
+            <td>{{ h.type }}</td>
+            <td>{{ h.certification }}</td>
+            <td>{{ h.capaciteProduction }} kg/j</td>
+            <td>
+              <span class="status" [class.off]="!h.active">{{ h.active ? 'Active' : 'Inactive' }}</span>
+            </td>
+            <td class="actions">
+              <button nbButton ghost status="primary" size="small" type="button" (click)="editHuilerie(h)" aria-label="Editer huilerie">
+                <nb-icon icon="edit-outline"></nb-icon>
+              </button>
+              <button nbButton ghost size="small" type="button" (click)="toggleHuilerieStatus(h)">
+                {{ h.active ? 'Desactiver' : 'Activer' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+
+
+  </nb-card-body>
+</nb-card>
+
+<nb-card class="section-card">
+  <nb-card-header>Gestion des Machines (Admin)</nb-card-header>
+  <nb-card-body>
+    <form class="entity-form" [formGroup]="machineForm" (ngSubmit)="submitMachine()">
+      <div class="form-group">
+        <label class="form-label">Nom machine *</label>
+        <input nbInput fullWidth formControlName="nomMachine" placeholder="Nom machine" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Type machine *</label>
+        <input nbInput fullWidth formControlName="typeMachine" placeholder="Type machine" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Etat machine *</label>
+        <nb-select fullWidth formControlName="etatMachine">
+          <nb-option value="EN_SERVICE">En service</nb-option>
+          <nb-option value="SURVEILLANCE">Surveillance</nb-option>
+          <nb-option value="MAINTENANCE">Maintenance</nb-option>
+        </nb-select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Capacite (kg/j) *</label>
+        <input nbInput fullWidth type="number" formControlName="capacite" placeholder="0" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Huilerie *</label>
+        <nb-select fullWidth formControlName="huilerieId">
+          <nb-option *ngFor="let h of huileries" [value]="h.idHuilerie">{{ h.nom }}</nb-option>
+        </nb-select>
+      </div>
+
+      <div class="form-actions">
+        <button nbButton status="primary" type="submit">
+          {{ editingMachineId ? 'Mettre a jour machine' : 'Ajouter machine' }}
+        </button>
+        <button *ngIf="editingMachineId" nbButton status="basic" outline type="button" (click)="resetMachineForm()">Annuler</button>
+      </div>
+    </form>
+
+    <div class="table-wrap">
+      <table class="crud-table">
+        <thead>
+          <tr>
+            <th>Machine</th>
+            <th>Type</th>
+            <th>Etat</th>
+            <th>Capacite</th>
+            <th>Huilerie</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of machines">
+            <td>{{ m.nomMachine }}</td>
+            <td>{{ m.typeMachine }}</td>
+            <td>{{ getMachineStatusLabel(m.etatMachine) }}</td>
+            <td>{{ m.capacite }} kg/j</td>
+            <td>{{ getHuilerieName(m.huilerieId) }}</td>
+            <td class="actions">
+              <button nbButton ghost status="primary" size="small" type="button" (click)="editMachine(m)" aria-label="Editer machine">
+                <nb-icon icon="edit-outline"></nb-icon>
+              </button>
+              <button nbButton ghost status="danger" size="small" type="button" (click)="deleteMachine(m)" aria-label="Supprimer machine">
+                <nb-icon icon="trash-2-outline"></nb-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
   </nb-card-body>
 </nb-card>

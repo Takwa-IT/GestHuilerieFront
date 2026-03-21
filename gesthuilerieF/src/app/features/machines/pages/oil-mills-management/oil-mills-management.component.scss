@@ -1,3 +1,76 @@
+.section-card {
+  margin-bottom: 1rem;
+}
+
+.entity-form {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-bottom: 1rem;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.crud-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.6rem 0.45rem;
+    border-bottom: 1px solid var(--separator);
+    white-space: nowrap;
+  }
+
+  th {
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.72;
+  }
+}
+
+.status {
+  border-radius: 999px;
+  background: rgba(126, 148, 64, 0.18);
+  color: var(--color-primary-800);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.18rem 0.6rem;
+}
+
+.status.off {
+  background: rgba(158, 58, 58, 0.18);
+  color: #9e3a3a;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.form-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
 .table {
   display: grid;
   gap: 0.4rem;

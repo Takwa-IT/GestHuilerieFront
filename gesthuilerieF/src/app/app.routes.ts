@@ -23,6 +23,15 @@ export const APP_ROUTES: Routes = [
         path: 'dashboard/admin',
         loadComponent: () => import('./features/dashboard/pages/admin-dashboard/admin-dashboard.component').then(c => c.AdminDashboardComponent),
       },
+      // Reception
+      {
+        path: 'reception',
+        loadComponent: () => import('./features/reception/pages/reception-list/reception-list.component').then(c => c.ReceptionListComponent),
+      },
+      {
+        path: 'reception/form',
+        loadComponent: () => import('./features/reception/pages/reception-form/reception-form.component').then(c => c.ReceptionFormComponent),
+      },
       // Production
       {
         path: 'production/guides',
@@ -34,13 +43,17 @@ export const APP_ROUTES: Routes = [
       },
       // Raw material
       {
-        path: 'raw-material',
-        loadComponent: () => import('./features/raw-material/pages/raw-materials/raw-materials.component').then(c => c.RawMaterialsComponent),
+        path: 'matieres-premieres',
+        loadComponent: () => import('./features/matieres-premieres/pages/raw-materials/raw-materials.component').then(c => c.RawMaterialsComponent),
       },
       // Machines
       {
-        path: 'machines/state',
-        loadComponent: () => import('./features/machines/pages/machine-state/machine-state.component').then(c => c.MachineStateComponent),
+        path: 'machines',
+        loadComponent: () => import('./features/machines/pages/machines-list/machines-list.component').then(c => c.MachinesListComponent),
+      },
+      {
+        path: 'machines/form',
+        loadComponent: () => import('./features/machines/pages/machines-form/machines-form.component').then(c => c.MachinesFormComponent),
       },
       {
         path: 'machines/management',
@@ -48,13 +61,35 @@ export const APP_ROUTES: Routes = [
       },
       // Stock
       {
+        path: 'stock',
+        loadComponent: () => import('./features/stock/pages/stock-list/stock-list.component').then(c => c.StockListComponent),
+      },
+      {
+        path: 'stock/form',
+        loadComponent: () => import('./features/stock/pages/stock-form/stock-form.component').then(c => c.StockFormComponent),
+      },
+      {
+        path: 'stock/history',
+        loadComponent: () => import('./features/stock/pages/stock-list/stock-list.component').then(c => c.StockListComponent),
+      },
+      {
         path: 'stock/weighing',
         loadComponent: () => import('./features/stock/pages/weighing-stock/weighing-stock.component').then(c => c.WeighingStockComponent),
       },
+      // Lots (feature separée)
       {
-        path: 'stock/traceability',
-        loadComponent: () => import('./features/stock/pages/lot-traceability/lot-traceability.component').then(c => c.LotTraceabilityComponent),
+        path: 'lots/traceability',
+        loadComponent: () => import('./features/lots/pages/lot-traceability/lot-traceability.component').then(c => c.LotTraceabilityComponent),
       },
+      {
+        path: 'lots',
+        loadComponent: () => import('./features/lots/pages/lot-list/lot-list.component').then(c => c.LotListComponent),
+      },
+      {
+        path: 'lots/:id',
+        loadComponent: () => import('./features/lots/pages/lot-details/lot-details.component').then(c => c.LotDetailsComponent),
+      },
+      { path: 'raw-material', redirectTo: 'matieres-premieres', pathMatch: 'full' },
       // Users
       {
         path: 'users',
@@ -62,11 +97,15 @@ export const APP_ROUTES: Routes = [
       },
       { path: 'dashboard', redirectTo: 'dashboard/production', pathMatch: 'full' },
       { path: 'production', redirectTo: 'production/guides', pathMatch: 'full' },
-      { path: 'machines', redirectTo: 'machines/state', pathMatch: 'full' },
-      { path: 'stock', redirectTo: 'stock/weighing', pathMatch: 'full' },
+      { path: 'machines/state', redirectTo: 'machines', pathMatch: 'full' },
       { path: '', redirectTo: 'dashboard/production', pathMatch: 'full' },
     ],
   },
+  { path: 'reception', redirectTo: 'pages/reception', pathMatch: 'full' },
+  { path: 'machines', redirectTo: 'pages/machines', pathMatch: 'full' },
+  { path: 'stock', redirectTo: 'pages/stock', pathMatch: 'full' },
+  { path: 'lots', redirectTo: 'pages/lots', pathMatch: 'full' },
+  { path: 'matieres-premieres', redirectTo: 'pages/matieres-premieres', pathMatch: 'full' },
   { path: '', redirectTo: 'pages', pathMatch: 'full' },
   { path: '**', redirectTo: 'pages' },
 ];

@@ -31,3 +31,32 @@ body {
 	margin: 0;
 	background-color: #f8faf4;
 }
+
+/* Angular Material buttons aligned with olive palette */
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-unelevated-button.mat-primary {
+	--mdc-filled-button-container-color: var(--color-primary-600);
+	--mdc-filled-button-label-text-color: #ffffff;
+}
+
+.mat-mdc-raised-button.mat-primary:hover,
+.mat-mdc-unelevated-button.mat-primary:hover {
+	--mdc-filled-button-container-color: var(--color-primary-700);
+}
+
+.mat-mdc-outlined-button,
+.mat-mdc-stroked-button {
+	--mdc-outlined-button-outline-color: var(--color-primary-400);
+	--mdc-outlined-button-label-text-color: var(--color-primary-700);
+	border-color: var(--color-primary-400);
+	color: var(--color-primary-700);
+}
+
+.mat-mdc-raised-button.mat-primary {
+  --mdc-protected-button-container-color: var(--color-primary-600);
+  --mdc-protected-button-label-text-color: #fff;
+}
+
+.mat-mdc-raised-button.mat-primary:hover {
+  --mdc-protected-button-container-color: var(--color-primary-700);
+}

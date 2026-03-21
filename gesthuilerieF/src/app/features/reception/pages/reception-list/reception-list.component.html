@@ -1,0 +1,24 @@
+<mat-card class="olive-card">
+  <mat-card-header>
+    <mat-card-title>Reception</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="actions top-actions">
+      <a mat-raised-button color="primary" [routerLink]="['/pages/reception/form']">Nouvelle reception</a>
+    </div>
+
+    <div class="summary" *ngIf="lastReception as r; else emptyState">
+      <h3>Derniere reception</h3>
+      <div class="grid">
+        <div class="item"><span>ID</span><strong>{{ r.idPesee }}</strong></div>
+        <div class="item"><span>Date</span><strong>{{ r.datePesee }}</strong></div>
+        <div class="item"><span>Lot</span><strong>{{ r.lotId }}</strong></div>
+        <div class="item"><span>Poids net</span><strong>{{ r.poidsNet }} kg</strong></div>
+      </div>
+    </div>
+
+    <ng-template #emptyState>
+      <p class="empty">Aucune reception disponible.</p>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

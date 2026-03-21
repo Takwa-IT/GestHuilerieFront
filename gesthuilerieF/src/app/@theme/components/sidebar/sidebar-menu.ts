@@ -6,44 +6,40 @@ export const MENU_ITEMS: NbMenuItem[] = [
     group: true,
   },
   {
-    title: 'Dashboard Production',
+    title: 'Dashboard',
     icon: 'activity-outline',
     link: '/pages/dashboard/production',
     home: true,
   },
   {
-    title: 'Pesée & Stocks',
+    title: 'Réception',
     icon: 'cube-outline',
-    link: '/pages/stock/weighing',
+    link: '/pages/reception',
   },
   {
-    title: 'Matières Premières',
-    icon: 'archive-outline',
-    link: '/pages/raw-material',
-  },
-  {
-    title: 'Guides de Production',
+    title: 'Guide de Production',
     icon: 'options-2-outline',
     link: '/pages/production/guides',
   },
   {
+    title: 'Machines',
+    icon: 'hard-drive-outline',
+    link: '/pages/machines',
+  },
+  {
+    title: 'Matières Premières',
+    icon: 'archive-outline',
+    link: '/pages/matieres-premieres',
+  },
+  {
+    title: 'Stock',
+    icon: 'cube-outline',
+    link: '/pages/stock',
+  },
+  {
     title: 'Traçabilité des Lots',
     icon: 'pricetags-outline',
-    link: '/pages/stock/traceability',
-  },
-  {
-    title: 'Données IA',
-    group: true,
-  },
-  {
-    title: 'Qualité & Rendement',
-    icon: 'bar-chart-2-outline',
-    link: '/pages/production/quality',
-  },
-  {
-    title: 'État Machines',
-    icon: 'hard-drive-outline',
-    link: '/pages/machines/state',
+    link: '/pages/lots/traceability',
   },
   {
     title: 'Administrateur',

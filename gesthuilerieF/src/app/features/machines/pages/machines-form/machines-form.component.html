@@ -1,0 +1,57 @@
+<mat-card class="olive-card">
+  <mat-card-header>
+    <mat-card-title>Machines - Filtres availability</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="filters" [formGroup]="form">
+      <mat-form-field appearance="outline">
+        <mat-label>Etat machine</mat-label>
+        <mat-select formControlName="etatMachine">
+          <mat-option value="ALL">Tous</mat-option>
+          <mat-option value="EN_SERVICE">En service</mat-option>
+          <mat-option value="SURVEILLANCE">Surveillance</mat-option>
+          <mat-option value="MAINTENANCE">Maintenance</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Availability</mat-label>
+        <mat-select formControlName="availability">
+          <mat-option value="ALL">Toutes</mat-option>
+          <mat-option value="DISPONIBLE">Disponible</mat-option>
+          <mat-option value="INDISPONIBLE">Indisponible</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Capacite min</mat-label>
+        <input matInput type="number" formControlName="minCapacite" />
+      </mat-form-field>
+    </form>
+
+    <div class="actions">
+      <a mat-stroked-button [routerLink]="['/pages/machines']">Retour liste</a>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Machine</th>
+            <th>Etat</th>
+            <th>Capacite</th>
+            <th>Availability</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let machine of filteredMachines">
+            <td>{{ machine.nomMachine }}</td>
+            <td>{{ statusLabel(machine.etatMachine) }}</td>
+            <td>{{ machine.capacite }}</td>
+            <td>{{ availabilityLabel(machine.availability) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card-content>
+</mat-card>

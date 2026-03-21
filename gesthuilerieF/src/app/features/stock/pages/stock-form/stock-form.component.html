@@ -1,0 +1,48 @@
+<mat-card class="olive-card">
+  <mat-card-header>
+    <mat-card-title>Stock - Nouveau mouvement</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="grid" [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Type mouvement</mat-label>
+        <mat-select formControlName="typeMouvement">
+          <mat-option value="ARRIVAL">Entree</mat-option>
+          <mat-option value="DEPARTURE">Sortie</mat-option>
+          <mat-option value="TRANSFER">Transfert</mat-option>
+          <mat-option value="ADJUSTMENT">Ajustement</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Reference lot</mat-label>
+        <input matInput type="number" formControlName="referenceId" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Quantite</mat-label>
+        <input matInput type="number" formControlName="quantite" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Date mouvement</mat-label>
+        <input matInput type="datetime-local" formControlName="dateMouvement" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Commentaire</mat-label>
+        <input matInput formControlName="commentaire" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Huilerie ID</mat-label>
+        <input matInput type="number" formControlName="huilerieId" />
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" type="submit">Enregistrer</button>
+        <a mat-stroked-button [routerLink]="['/pages/stock']">Retour liste</a>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

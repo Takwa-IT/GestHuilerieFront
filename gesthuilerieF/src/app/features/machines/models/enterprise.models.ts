@@ -36,7 +36,7 @@ export interface Maintenance {
 
 export interface CampagneOlives {
   idCampagne: number;
-  annee: number;
+  annee: String;
   dateDebut: string;
   dateFin: string;
   huilerieId: number;

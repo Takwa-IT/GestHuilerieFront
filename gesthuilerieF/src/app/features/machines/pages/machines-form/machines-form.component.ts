@@ -44,11 +44,12 @@ export class MachinesFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.machineService.getMock().subscribe(data => {
-      this.machines = data.map(item => ({
+    this.machineService.getAll().subscribe((data) => {
+      this.machines = data.map((item) => ({
         ...item,
         availability: item.etatMachine === 'MAINTENANCE' ? 'INDISPONIBLE' : 'DISPONIBLE',
       }));
+
       this.applyFilter();
       this.form.valueChanges.subscribe(() => this.applyFilter());
     });
@@ -75,10 +76,11 @@ export class MachinesFormComponent implements OnInit {
     const raw = this.form.getRawValue();
     const minCapacite = raw.minCapacite ? Number(raw.minCapacite) : 0;
 
-    this.filteredMachines = this.machines.filter(machine => {
+    this.filteredMachines = this.machines.filter((machine) => {
       const statusMatch = raw.etatMachine === 'ALL' || machine.etatMachine === raw.etatMachine;
       const availabilityMatch = raw.availability === 'ALL' || machine.availability === raw.availability;
       const capaciteMatch = machine.capacite >= minCapacite;
+
       return statusMatch && availabilityMatch && capaciteMatch;
     });
   }

@@ -6,18 +6,18 @@ import { MatierePremiere } from '../../models/raw-material.models';
 import { RawMaterialService } from '../../services/raw-material.service';
 
 @Component({
-    selector: 'app-raw-materials',
-    templateUrl: './raw-materials.component.html',
-    styleUrls: ['./raw-materials.component.scss'],
-    standalone: true,
-    imports: [
-        NbCardModule,
-        NbInputModule,
-        NbButtonModule,
-        NbIconModule,
-        CommonModule,
-        ReactiveFormsModule,
-    ],
+  selector: 'app-raw-materials',
+  templateUrl: './raw-materials.component.html',
+  styleUrls: ['./raw-materials.component.scss'],
+  standalone: true,
+  imports: [
+    NbCardModule,
+    NbInputModule,
+    NbButtonModule,
+    NbIconModule,
+    CommonModule,
+    ReactiveFormsModule,
+  ],
 })
 export class RawMaterialsComponent implements OnInit {
   rawMaterials: MatierePremiere[] = [];
@@ -38,7 +38,7 @@ export class RawMaterialsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.rawMaterialService.getMock().subscribe(data => {
+    this.rawMaterialService.getAll().subscribe(data => {
       this.rawMaterials = data;
     });
   }
@@ -51,29 +51,25 @@ export class RawMaterialsComponent implements OnInit {
 
     const payload = this.rawMaterialForm.getRawValue();
     if (this.editingId !== null) {
-      this.rawMaterials = this.rawMaterials.map(item =>
-        item.idMatierePremiere === this.editingId
-          ? {
-              ...item,
-              nom: payload.nom ?? '',
-              type: payload.type ?? '',
-              uniteMesure: payload.uniteMesure ?? '',
-              description: payload.description ?? '',
-            }
-          : item,
-      );
+      this.rawMaterialService.update(this.editingId, {
+        nom: payload.nom ?? '',
+        type: payload.type ?? '',
+        uniteMesure: payload.uniteMesure ?? '',
+        description: payload.description ?? '',
+      }).subscribe(updated => {
+        this.rawMaterials = this.rawMaterials.map(item =>
+          item.idMatierePremiere === updated.idMatierePremiere ? updated : item,
+        );
+      });
     } else {
-      const newId = Math.max(...this.rawMaterials.map(item => item.idMatierePremiere), 0) + 1;
-      this.rawMaterials = [
-        ...this.rawMaterials,
-        {
-          idMatierePremiere: newId,
-          nom: payload.nom ?? '',
-          type: payload.type ?? '',
-          uniteMesure: payload.uniteMesure ?? '',
-          description: payload.description ?? '',
-        },
-      ];
+      this.rawMaterialService.create({
+        nom: payload.nom ?? '',
+        type: payload.type ?? '',
+        uniteMesure: payload.uniteMesure ?? '',
+        description: payload.description ?? '',
+      }).subscribe(created => {
+        this.rawMaterials = [...this.rawMaterials, created];
+      });
     }
 
     this.resetForm();
@@ -90,10 +86,12 @@ export class RawMaterialsComponent implements OnInit {
   }
 
   remove(item: MatierePremiere): void {
-    this.rawMaterials = this.rawMaterials.filter(current => current.idMatierePremiere !== item.idMatierePremiere);
-    if (this.editingId === item.idMatierePremiere) {
-      this.resetForm();
-    }
+    this.rawMaterialService.delete(item.idMatierePremiere).subscribe(() => {
+      this.rawMaterials = this.rawMaterials.filter(current => current.idMatierePremiere !== item.idMatierePremiere);
+      if (this.editingId === item.idMatierePremiere) {
+        this.resetForm();
+      }
+    });
   }
 
   resetForm(): void {

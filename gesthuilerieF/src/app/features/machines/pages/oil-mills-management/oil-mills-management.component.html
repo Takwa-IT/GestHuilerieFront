@@ -36,7 +36,8 @@
         <button nbButton status="primary" type="submit">
           {{ editingHuilerieId ? 'Mettre a jour huilerie' : 'Creer huilerie' }}
         </button>
-        <button *ngIf="editingHuilerieId" nbButton status="basic" outline type="button" (click)="resetHuilerieForm()">Annuler</button>
+        <button *ngIf="editingHuilerieId" nbButton status="basic" outline type="button"
+          (click)="resetHuilerieForm()">Annuler</button>
       </div>
     </form>
 
@@ -54,7 +55,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let h of huileries">
+          <tr *ngFor="let h of huileries; trackBy: trackByHuilerie">
             <td>{{ h.nom }}</td>
             <td>{{ h.localisation }}</td>
             <td>{{ h.type }}</td>
@@ -64,7 +65,8 @@
               <span class="status" [class.off]="!h.active">{{ h.active ? 'Active' : 'Inactive' }}</span>
             </td>
             <td class="actions">
-              <button nbButton ghost status="primary" size="small" type="button" (click)="editHuilerie(h)" aria-label="Editer huilerie">
+              <button nbButton ghost status="primary" size="small" type="button" (click)="editHuilerie(h)"
+                aria-label="Editer huilerie">
                 <nb-icon icon="edit-outline"></nb-icon>
               </button>
               <button nbButton ghost size="small" type="button" (click)="toggleHuilerieStatus(h)">
@@ -119,7 +121,8 @@
         <button nbButton status="primary" type="submit">
           {{ editingMachineId ? 'Mettre a jour machine' : 'Ajouter machine' }}
         </button>
-        <button *ngIf="editingMachineId" nbButton status="basic" outline type="button" (click)="resetMachineForm()">Annuler</button>
+        <button *ngIf="editingMachineId" nbButton status="basic" outline type="button"
+          (click)="resetMachineForm()">Annuler</button>
       </div>
     </form>
 
@@ -136,17 +139,19 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let m of machines">
+          <tr *ngFor="let m of machines; trackBy: trackByMachine">
             <td>{{ m.nomMachine }}</td>
             <td>{{ m.typeMachine }}</td>
             <td>{{ getMachineStatusLabel(m.etatMachine) }}</td>
             <td>{{ m.capacite }} kg/j</td>
             <td>{{ getHuilerieName(m.huilerieId) }}</td>
             <td class="actions">
-              <button nbButton ghost status="primary" size="small" type="button" (click)="editMachine(m)" aria-label="Editer machine">
+              <button nbButton ghost status="primary" size="small" type="button" (click)="editMachine(m)"
+                aria-label="Editer machine">
                 <nb-icon icon="edit-outline"></nb-icon>
               </button>
-              <button nbButton ghost status="danger" size="small" type="button" (click)="deleteMachine(m)" aria-label="Supprimer machine">
+              <button nbButton ghost status="danger" size="small" type="button" (click)="deleteMachine(m)"
+                aria-label="Supprimer machine">
                 <nb-icon icon="trash-2-outline"></nb-icon>
               </button>
             </td>

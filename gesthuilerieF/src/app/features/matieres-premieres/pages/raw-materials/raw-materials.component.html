@@ -50,10 +50,12 @@
             <td>{{ item.uniteMesure }}</td>
             <td>{{ item.description }}</td>
             <td class="actions">
-              <button nbButton ghost status="primary" size="small" type="button" (click)="edit(item)">
+              <button nbButton ghost status="primary" size="small" type="button" (click)="edit(item)" title="Modifier"
+                aria-label="Modifier">
                 <nb-icon icon="edit-outline"></nb-icon>
               </button>
-              <button nbButton ghost status="danger" size="small" type="button" (click)="remove(item)">
+              <button nbButton ghost status="danger" size="small" type="button" (click)="remove(item)" title="Supprimer"
+                aria-label="Supprimer">
                 <nb-icon icon="trash-2-outline"></nb-icon>
               </button>
             </td>

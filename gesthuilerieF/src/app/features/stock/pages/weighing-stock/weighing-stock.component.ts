@@ -7,18 +7,18 @@ import { LotOlives } from '../../../lots/models/lot.models';
 import { CreatePeseeInput, LotManagementService } from '../../../lots/services/lot-management.service';
 
 @Component({
-    selector: 'app-weighing-stock',
-    templateUrl: './weighing-stock.component.html',
-    styleUrls: ['./weighing-stock.component.scss'],
-    standalone: true,
-    imports: [
-        NbCardModule,
-        NbInputModule,
-        NbButtonModule,
-        NbSelectModule,
-        CommonModule,
-        ReactiveFormsModule,
-    ],
+  selector: 'app-weighing-stock',
+  templateUrl: './weighing-stock.component.html',
+  styleUrls: ['./weighing-stock.component.scss'],
+  standalone: true,
+  imports: [
+    NbCardModule,
+    NbInputModule,
+    NbButtonModule,
+    NbSelectModule,
+    CommonModule,
+    ReactiveFormsModule,
+  ],
 })
 export class WeighingStockComponent implements OnInit {
   weighings: Pesee[] = [];
@@ -38,15 +38,15 @@ export class WeighingStockComponent implements OnInit {
       poidsTare: [0, [Validators.required, Validators.min(0)]],
       poidsNet: [{ value: 0, disabled: true }, [Validators.required]],
       lotMode: ['existing', [Validators.required]],
-      existingLotId: [31, [Validators.required]],
-      origine: ['Meknes', [Validators.required]],
-      varieteOlive: ['Picholine Morocaine', [Validators.required]],
-      maturite: ['Vert tendre', [Validators.required]],
-      dateRecolte: [new Date().toISOString().slice(0, 10), [Validators.required]],
-      dateReception: [new Date().toISOString().slice(0, 10), [Validators.required]],
-      dureeStockageAvantBroyage: [1, [Validators.required, Validators.min(0)]],
-      matierePremiereId: [1, [Validators.required, Validators.min(1)]],
-      campagneId: [new Date().getFullYear(), [Validators.required, Validators.min(2000)]],
+      existingLotId: [null as number | null, [Validators.required]],
+      origine: ['', [Validators.required]],
+      varieteOlive: ['', [Validators.required]],
+      maturite: [''],
+      dateRecolte: [new Date().toISOString().slice(0, 10)],
+      dateReception: [new Date().toISOString().slice(0, 10)],
+      dureeStockageAvantBroyage: [1],
+      matierePremiereId: [1],
+      campagneId: [new Date().getFullYear()],
       huilerieId: [1, [Validators.required]],
     });
 
@@ -64,20 +64,26 @@ export class WeighingStockComponent implements OnInit {
     this.weighingForm.get('existingLotId')?.valueChanges.subscribe(lotId => {
       this.patchLotIdentityFromSelection(Number(lotId));
     });
+
+    this.applyLotModeValidation('existing');
   }
 
   ngOnInit(): void {
     this.lotManagementService.loadInitialData().subscribe(() => {
-      this.lotManagementService.lots$.subscribe(data => {
+      this.lotManagementService.lots$.subscribe((data: LotOlives[]) => {
         this.lots = data;
-      });
 
-      this.lotManagementService.weighings$.subscribe(data => {
+        const selectedLotId = Number(this.weighingForm.get('existingLotId')?.value);
+        const selectedLot = this.lots.find(item => item.idLot === selectedLotId);
+
+        if (!selectedLot && this.lots.length > 0) {
+          this.weighingForm.patchValue({
+            existingLotId: this.lots[0].idLot,
+          });
+        }
+      });
+      this.lotManagementService.weighings$.subscribe((data: Pesee[]) => {
         this.weighings = data;
-      });
-
-      this.lotManagementService.movements$.subscribe(data => {
-        this.movements = data;
       });
 
       this.patchLotIdentityFromSelection(Number(this.weighingForm.get('existingLotId')?.value));
@@ -85,6 +91,9 @@ export class WeighingStockComponent implements OnInit {
   }
 
   submitWeighing(): void {
+    alert('submitWeighing called');
+  console.log('submitWeighing called');
+
     this.errorMessage = '';
 
     if (this.weighingForm.invalid) {
@@ -93,25 +102,26 @@ export class WeighingStockComponent implements OnInit {
     }
 
     const raw = this.weighingForm.getRawValue();
+
     const input: CreatePeseeInput = {
       datePesee: raw.datePesee ?? new Date().toISOString(),
       poidsBrut: Number(raw.poidsBrut),
       poidsTare: Number(raw.poidsTare),
       huilerieId: Number(raw.huilerieId),
       lotMode: raw.lotMode === 'new' ? 'new' : 'existing',
-      existingLotId: Number(raw.existingLotId),
+      existingLotId: raw.existingLotId ? Number(raw.existingLotId) : undefined,
       origine: String(raw.origine ?? ''),
       varieteOlive: String(raw.varieteOlive ?? ''),
       newLotDetails:
         raw.lotMode === 'new'
           ? {
-              maturite: String(raw.maturite ?? ''),
-              dateRecolte: String(raw.dateRecolte ?? ''),
-              dateReception: String(raw.dateReception ?? ''),
-              dureeStockageAvantBroyage: Number(raw.dureeStockageAvantBroyage),
-              matierePremiereId: Number(raw.matierePremiereId),
-              campagneId: Number(raw.campagneId),
-            }
+            maturite: String(raw.maturite ?? ''),
+            dateRecolte: String(raw.dateRecolte ?? ''),
+            dateReception: String(raw.dateReception ?? ''),
+            dureeStockageAvantBroyage: Number(raw.dureeStockageAvantBroyage),
+            matierePremiereId: Number(raw.matierePremiereId),
+            campagneId: Number(raw.campagneId),
+          }
           : undefined,
     };
 
@@ -123,15 +133,20 @@ export class WeighingStockComponent implements OnInit {
           poidsNet: 0,
           datePesee: new Date().toISOString().slice(0, 16),
           lotMode: 'existing',
-          existingLotId: result.lot.idLot,
-          origine: result.lot.origine,
-          varieteOlive: result.lot.varieteOlive,
+          existingLotId: result.lotId,
         });
+
+        this.patchLotIdentityFromSelection(result.lotId);
       },
       error: errorResponse => {
-        this.errorMessage = errorResponse?.message ?? 'Erreur de validation metier.';
+        this.errorMessage =
+          errorResponse?.error?.message ??
+          errorResponse?.message ??
+          'Erreur de validation metier.';
       },
     });
+    console.log('form valid =', this.weighingForm.valid);
+    console.log('raw =', this.weighingForm.getRawValue());
   }
 
   movementLabel(type: StockMovement['typeMouvement']): string {
@@ -163,7 +178,7 @@ export class WeighingStockComponent implements OnInit {
         </style>
       </head>
       <body>
-        <h1>Recu de pesee</h1>
+<h1>Recu de pesee</h1>
         <div class="line">ID pesee: ${pesee.idPesee}</div>
         <div class="line">Date: ${pesee.datePesee}</div>
         <div class="line">Lot: ${pesee.lotId}</div>
@@ -188,17 +203,39 @@ export class WeighingStockComponent implements OnInit {
 
   private applyLotModeValidation(mode: 'existing' | 'new'): void {
     const existingLotControl = this.weighingForm.get('existingLotId');
-    if (!existingLotControl) {
-      return;
-    }
+    const newLotFields = [
+      'maturite',
+      'dateRecolte',
+      'dateReception',
+      'dureeStockageAvantBroyage',
+      'matierePremiereId',
+      'campagneId',
+    ];
 
     if (mode === 'existing') {
-      existingLotControl.setValidators([Validators.required]);
+      existingLotControl?.setValidators([Validators.required]);
+
+      newLotFields.forEach(field => {
+        const control = this.weighingForm.get(field);
+        control?.clearValidators();
+        control?.updateValueAndValidity({ emitEvent: false });
+      });
     } else {
-      existingLotControl.clearValidators();
+      existingLotControl?.clearValidators();
+
+      this.weighingForm.get('maturite')?.setValidators([Validators.required]);
+      this.weighingForm.get('dateRecolte')?.setValidators([Validators.required]);
+      this.weighingForm.get('dateReception')?.setValidators([Validators.required]);
+      this.weighingForm.get('dureeStockageAvantBroyage')?.setValidators([Validators.required, Validators.min(0)]);
+      this.weighingForm.get('matierePremiereId')?.setValidators([Validators.required, Validators.min(1)]);
+      this.weighingForm.get('campagneId')?.setValidators([Validators.required, Validators.min(2000)]);
+
+      newLotFields.forEach(field => {
+        this.weighingForm.get(field)?.updateValueAndValidity({ emitEvent: false });
+      });
     }
 
-    existingLotControl.updateValueAndValidity({ emitEvent: false });
+    existingLotControl?.updateValueAndValidity({ emitEvent: false });
   }
 
   private patchLotIdentityFromSelection(lotId: number): void {
@@ -211,9 +248,13 @@ export class WeighingStockComponent implements OnInit {
       return;
     }
 
-    this.weighingForm.patchValue({
-      origine: lot.origine,
-      varieteOlive: lot.varieteOlive,
-    });
+    this.weighingForm.patchValue(
+      {
+        origine: lot.origine,
+        varieteOlive: lot.varieteOlive,
+      },
+      { emitEvent: false },
+    );
   }
+
 }

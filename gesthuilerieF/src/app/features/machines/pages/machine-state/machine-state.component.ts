@@ -5,29 +5,39 @@ import { Machine } from '../../models/enterprise.models';
 import { MachineService } from '../../services/machine.service';
 
 @Component({
-    selector: 'app-machine-state',
-    templateUrl: './machine-state.component.html',
-    styleUrls: ['./machine-state.component.scss'],
-    standalone: true,
-    imports: [
-        NbCardModule,
-        NgFor,
-        NbProgressBarModule,
-    ],
+  selector: 'app-machine-state',
+  templateUrl: './machine-state.component.html',
+  styleUrls: ['./machine-state.component.scss'],
+  standalone: true,
+  imports: [
+    NbCardModule,
+    NgFor,
+    NbProgressBarModule,
+  ],
 })
 export class MachineStateComponent implements OnInit {
   machines: Array<Machine & { health: number; maintenance: string }> = [];
 
-  constructor(private machineService: MachineService) {}
+  constructor(private machineService: MachineService) { }
 
   ngOnInit(): void {
-    this.machineService.getMock().subscribe(data => {
-      this.machines = data.map((machine, index) => ({
+    this.machineService.getAll().subscribe((data) => {
+      this.machines = data.map((machine) => ({
         ...machine,
-        health: [84, 72, 63, 90][index] ?? 78,
-        maintenance: ['03/03/2026', '01/03/2026', '08/03/2026', '05/03/2026'][index] ?? '07/03/2026',
+        health: this.estimateHealth(machine.etatMachine),
+        maintenance: '-',
       }));
     });
+  }
+
+  private estimateHealth(status: string): number {
+    if (status === 'EN_SERVICE') {
+      return 92;
+    }
+    if (status === 'SURVEILLANCE') {
+      return 68;
+    }
+    return 35;
   }
 
   getStatusLabel(status: string): string {

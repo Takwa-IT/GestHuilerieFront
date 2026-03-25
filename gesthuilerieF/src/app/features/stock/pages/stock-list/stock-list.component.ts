@@ -48,11 +48,6 @@ export class StockListComponent implements OnInit {
     });
   }
 
-  deleteMovement(id: number): void {
-    this.stockManagementService.deleteMovement(id);
-    this.applyFilter();
-  }
-
   movementLabel(type: StockMovement['typeMouvement']): string {
     if (type === 'ARRIVAL') {
       return 'Entree';

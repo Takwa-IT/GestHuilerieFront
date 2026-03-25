@@ -26,33 +26,28 @@ export class LotDetailsComponent implements OnInit {
     private lotManagementService: LotManagementService,
     private traceabilityService: TraceabilityService,
     private analyseLaboratoireService: AnalyseLaboratoireService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    const lotId = Number(this.route.snapshot.paramMap.get('id'));
+  const lotId = Number(this.route.snapshot.paramMap.get('id'));
+  if (!lotId) return;
 
-    if (!lotId) {
-      return;
-    }
+  this.lotManagementService.getLotById(lotId).subscribe(lot => {
+    this.lot = lot ?? null;
+  });
 
-    this.lotManagementService.loadInitialData().subscribe(() => {
-      this.lotManagementService.getLotById(lotId).subscribe(lot => {
-        this.lot = lot ?? null;
-      });
+  this.lotManagementService.getPeseesForLot(lotId).subscribe(data => {
+    this.pesees = data;
+  });
 
-      this.lotManagementService.getPeseesForLot(lotId).subscribe(data => {
-        this.pesees = data;
-      });
+  this.traceabilityService.getLotLifecycle(lotId).subscribe(data => {
+    this.events = data;
+  });
 
-      this.traceabilityService.getMockLotLifecycle().subscribe(data => {
-        this.events = data;
-      });
-
-      this.analyseLaboratoireService.getByLotFromStore(lotId).subscribe(data => {
-        this.analyses = data;
-      });
-    });
-  }
+  this.analyseLaboratoireService.getByLot(lotId).subscribe(data => {
+    this.analyses = data;
+  });
+}
 
   stageLabel(stage: TraceabilityEvent['etape']): string {
     if (stage === 'LOT_OLIVES') {

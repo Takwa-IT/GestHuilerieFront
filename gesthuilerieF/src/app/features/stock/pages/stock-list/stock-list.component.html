@@ -21,7 +21,7 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Reference lot</mat-label>
-        <input matInput type="number" formControlName="referenceId" placeholder="31" />
+        <input matInput type="number" formControlName="referenceId" />
       </mat-form-field>
     </form>
 
@@ -35,20 +35,17 @@
             <th>Quantite</th>
             <th>Date</th>
             <th>Commentaire</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let m of movements">
             <td>{{ m.id }}</td>
-            <td><span class="badge" [ngClass]="movementClass(m.typeMouvement)">{{ movementLabel(m.typeMouvement) }}</span></td>
+            <td><span class="badge" [ngClass]="movementClass(m.typeMouvement)">{{ movementLabel(m.typeMouvement)
+                }}</span></td>
             <td>{{ m.referenceId }}</td>
             <td>{{ m.quantite }}</td>
             <td>{{ m.dateMouvement }}</td>
             <td>{{ m.commentaire }}</td>
-            <td>
-              <button mat-stroked-button color="warn" type="button" (click)="deleteMovement(m.id)">Supprimer</button>
-            </td>
           </tr>
         </tbody>
       </table>

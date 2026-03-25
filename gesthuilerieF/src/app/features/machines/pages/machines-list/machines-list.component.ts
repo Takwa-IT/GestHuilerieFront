@@ -16,11 +16,11 @@ import { MachineService } from '../../services/machine.service';
 export class MachinesListComponent implements OnInit {
   machines: Array<Machine & { availability: string }> = [];
 
-  constructor(private machineService: MachineService) {}
+  constructor(private machineService: MachineService) { }
 
   ngOnInit(): void {
-    this.machineService.getMock().subscribe(data => {
-      this.machines = data.map(item => ({
+    this.machineService.getAll().subscribe((data) => {
+      this.machines = data.map((item) => ({
         ...item,
         availability: item.etatMachine === 'MAINTENANCE' ? 'Indisponible' : 'Disponible',
       }));

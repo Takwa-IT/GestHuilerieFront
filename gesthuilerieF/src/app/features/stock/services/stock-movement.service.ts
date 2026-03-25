@@ -1,27 +1,44 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { StockMovement, EXAMPLE_STOCK_MOVEMENT_JSON } from '../models/stock.models';
+import { Observable } from 'rxjs';
+import { StockMovement } from '../models/stock.models';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StockMovementService {
-  private readonly apiUrl = 'http://localhost:8069/api/stocks/mouvements';
+  private readonly apiUrl = `${environment.apiUrl}/stockMovements`;
 
   constructor(private http: HttpClient) {}
 
-  // Example REST call: GET /api/stocks/mouvements
   getAll(): Observable<StockMovement[]> {
     return this.http.get<StockMovement[]>(this.apiUrl);
   }
 
-  getMock(): Observable<StockMovement[]> {
-    return of([...EXAMPLE_STOCK_MOVEMENT_JSON]);
+  getByHuilerie(huilerieId: number): Observable<StockMovement[]> {
+    return this.http.get<StockMovement[]>(`${this.apiUrl}/huilerie/${huilerieId}`);
   }
 
-  // Example REST call: POST /api/stocks/mouvements
-  create(payload: Omit<StockMovement, 'id'>): Observable<StockMovement> {
+  create(payload: {
+    huilerieId: number;
+    referenceId: number;
+    quantite: number;
+    commentaire: string;
+    dateMouvement: string;
+    typeMouvement: StockMovement['typeMouvement'];
+  }): Observable<StockMovement> {
     return this.http.post<StockMovement>(this.apiUrl, payload);
+  }
+
+  updateTypeMouvement(
+    id: number,
+    typeMouvement: StockMovement['typeMouvement'],
+    quantite: number,
+): Observable<StockMovement> {
+    return this.http.patch<StockMovement>(`${this.apiUrl}/${id}/type`, {
+      typeMouvement,
+      quantite,
+    });
   }
 }

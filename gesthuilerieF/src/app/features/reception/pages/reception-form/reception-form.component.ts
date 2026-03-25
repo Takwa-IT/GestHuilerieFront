@@ -46,16 +46,16 @@ export class ReceptionFormComponent implements OnInit {
       poidsTare: [0, [Validators.required, Validators.min(0)]],
       poidsNet: [{ value: 0, disabled: true }, [Validators.required]],
       lotMode: ['existing', [Validators.required]],
-      existingLotId: [31, [Validators.required]],
-      origine: ['Meknes', [Validators.required]],
-      varieteOlive: ['Picholine Morocaine', [Validators.required]],
-      maturite: ['Vert tendre', [Validators.required]],
-      dateRecolte: [new Date().toISOString().slice(0, 10), [Validators.required]],
-      dateReception: [new Date().toISOString().slice(0, 10), [Validators.required]],
-      dureeStockageAvantBroyage: [1, [Validators.required, Validators.min(0)]],
-      matierePremiereId: [1, [Validators.required, Validators.min(1)]],
-      campagneId: [new Date().getFullYear(), [Validators.required, Validators.min(2000)]],
-      huilerieId: [1, [Validators.required]],
+      existingLotId: [null as number | null, [Validators.required]],
+      origine: ['', [Validators.required]],
+      varieteOlive: ['', [Validators.required]],
+      maturite: [''],
+      dateRecolte: [new Date().toISOString().slice(0, 10)],
+      dateReception: [new Date().toISOString().slice(0, 10)],
+      dureeStockageAvantBroyage: [1],
+      matierePremiereId: [1],
+      campagneId: [new Date().getFullYear()],
+      huilerieId: [1, [Validators.required, Validators.min(1)]],
     });
 
     this.form.valueChanges.subscribe(values => {
@@ -66,22 +66,33 @@ export class ReceptionFormComponent implements OnInit {
       this.form.get('poidsNet')?.setValue(net, { emitEvent: false });
     });
 
-    this.form.get('existingLotId')?.valueChanges.subscribe(id => {
-      if (this.isNewLotMode()) {
-        return;
-      }
-      const lot = this.lots.find(item => item.idLot === Number(id));
-      if (!lot) {
-        return;
-      }
-      this.form.patchValue({ origine: lot.origine, varieteOlive: lot.varieteOlive });
+    this.form.get('lotMode')?.valueChanges.subscribe(mode => {
+      this.applyLotModeValidation(mode === 'new' ? 'new' : 'existing');
     });
+
+    this.form.get('existingLotId')?.valueChanges.subscribe(id => {
+      this.patchLotIdentityFromSelection(Number(id));
+    });
+
+    this.applyLotModeValidation('existing');
   }
 
   ngOnInit(): void {
     this.lotManagementService.loadInitialData().subscribe(() => {
       this.lotManagementService.lots$.subscribe(data => {
         this.lots = data;
+
+        const selectedLotId = Number(this.form.get('existingLotId')?.value);
+        const selectedLot = this.lots.find(item => item.idLot === selectedLotId);
+
+        if (!selectedLot && this.lots.length > 0) {
+          const firstLot = this.lots[0];
+          this.form.patchValue({
+            existingLotId: firstLot.idLot,
+            origine: firstLot.origine,
+            varieteOlive: firstLot.varieteOlive,
+          });
+        }
       });
     });
   }
@@ -99,13 +110,14 @@ export class ReceptionFormComponent implements OnInit {
     }
 
     const raw = this.form.getRawValue();
+
     const payload: CreatePeseeInput = {
       datePesee: raw.datePesee ?? new Date().toISOString(),
       poidsBrut: Number(raw.poidsBrut),
       poidsTare: Number(raw.poidsTare),
       huilerieId: Number(raw.huilerieId),
       lotMode: raw.lotMode === 'new' ? 'new' : 'existing',
-      existingLotId: Number(raw.existingLotId),
+      existingLotId: raw.existingLotId ? Number(raw.existingLotId) : undefined,
       origine: String(raw.origine ?? ''),
       varieteOlive: String(raw.varieteOlive ?? ''),
       newLotDetails:
@@ -123,11 +135,19 @@ export class ReceptionFormComponent implements OnInit {
 
     this.lotManagementService.createPesee(payload).subscribe({
       next: result => {
-        this.savedReception = result.pesee;
+        this.savedReception = result;
         this.showSaveSuccessPopup = true;
       },
+
       error: errorResponse => {
-        this.errorMessage = errorResponse?.message ?? 'Erreur de validation.';
+        console.log('BACKEND ERROR =', errorResponse);
+        console.log('BACKEND ERROR BODY =', errorResponse?.error);
+
+        this.errorMessage =
+          errorResponse?.error?.message ??
+          errorResponse?.error?.error ??
+          errorResponse?.message ??
+          'Erreur de validation.';
       },
     });
   }
@@ -150,27 +170,26 @@ export class ReceptionFormComponent implements OnInit {
 
   private generateReceptionPdf(reception: Pesee): void {
     const html = `
-      <html>
-      <head>
-        <title>Reception ${reception.idPesee}</title>
-        <style>
-          body { font-family: sans-serif; padding: 24px; }
-          h1 { margin: 0 0 12px; }
-          .line { margin: 6px 0; }
-        </style>
-      </head>
-      <body>
-        <h1>Fiche Reception</h1>
-        <div class="line">ID reception: ${reception.idPesee}</div>
-        <div class="line">Date: ${reception.datePesee}</div>
-        <div class="line">Lot: ${reception.lotId}</div>
-        <div class="line">Poids brut: ${reception.poidsBrut} kg</div>
-        <div class="line">Poids tare: ${reception.poidsTare} kg</div>
-        <div class="line">Poids net: ${reception.poidsNet} kg</div>
-        <div class="line">Huilerie: ${reception.huilerieId}</div>
-      </body>
-      </html>
-    `;
+        <html>
+        <head>
+          <title>Reception ${reception.idPesee}</title>
+          <style>
+            body { font-family: sans-serif; padding: 24px; }
+  h1 { margin: 0 0 12px; }
+            .line { margin: 6px 0; }
+          </style>
+        </head>
+        <body>
+          <h1>Fiche Reception</h1>
+          <div class="line">ID reception: ${reception.idPesee}</div>
+          <div class="line">Date: ${reception.datePesee}</div>
+          <div class="line">Lot: ${reception.lotId}</div>
+          <div class="line">Poids brut: ${reception.poidsBrut} kg</div>
+          <div class="line">Poids tare: ${reception.poidsTare} kg</div>
+          <div class="line">Poids net: ${reception.poidsNet} kg</div>
+        </body>
+        </html>
+      `;
 
     const popup = window.open('', '_blank', 'width=900,height=700');
     if (!popup) {
@@ -182,5 +201,61 @@ export class ReceptionFormComponent implements OnInit {
     popup.document.close();
     popup.focus();
     popup.print();
+  }
+
+  private applyLotModeValidation(mode: 'existing' | 'new'): void {
+    const existingLotControl = this.form.get('existingLotId');
+    const newLotFields = [
+      'maturite',
+      'dateRecolte',
+      'dateReception',
+      'dureeStockageAvantBroyage',
+      'matierePremiereId',
+      'campagneId',
+    ];
+
+    if (mode === 'existing') {
+      existingLotControl?.setValidators([Validators.required]);
+
+      newLotFields.forEach(field => {
+        const control = this.form.get(field);
+        control?.clearValidators();
+        control?.updateValueAndValidity({ emitEvent: false });
+      });
+    } else {
+      existingLotControl?.clearValidators();
+
+      this.form.get('maturite')?.setValidators([Validators.required]);
+      this.form.get('dateRecolte')?.setValidators([Validators.required]);
+      this.form.get('dateReception')?.setValidators([Validators.required]);
+      this.form.get('dureeStockageAvantBroyage')?.setValidators([Validators.required, Validators.min(0)]);
+      this.form.get('matierePremiereId')?.setValidators([Validators.required, Validators.min(1)]);
+      this.form.get('campagneId')?.setValidators([Validators.required, Validators.min(2000)]);
+
+      newLotFields.forEach(field => {
+        this.form.get(field)?.updateValueAndValidity({ emitEvent: false });
+      });
+    }
+
+    existingLotControl?.updateValueAndValidity({ emitEvent: false });
+  }
+
+  private patchLotIdentityFromSelection(lotId: number): void {
+    if (this.isNewLotMode()) {
+      return;
+    }
+
+    const lot = this.lots.find(item => item.idLot === lotId);
+    if (!lot) {
+      return;
+    }
+
+    this.form.patchValue(
+      {
+        origine: lot.origine,
+        varieteOlive: lot.varieteOlive,
+      },
+      { emitEvent: false },
+    );
   }
 }

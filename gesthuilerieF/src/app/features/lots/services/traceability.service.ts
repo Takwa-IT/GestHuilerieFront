@@ -1,22 +1,39 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { TraceabilityEvent, EXAMPLE_TRACEABILITY_JSON } from '../models/lot.models';
+import { Observable, map } from 'rxjs';
+import { LotTraceability, TraceabilityEvent } from '../models/lot.models';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TraceabilityService {
-  private readonly apiUrl = 'http://localhost:8069/api/traceability';
+  private readonly apiUrl = `${environment.apiUrl}/traceability`;
 
   constructor(private http: HttpClient) {}
 
-  // Example REST call: GET /api/traceability/lots/:lotId
-  getLotLifecycle(lotId: number): Observable<TraceabilityEvent[]> {
-    return this.http.get<TraceabilityEvent[]>(`${this.apiUrl}/lots/${lotId}`);
+  getLotTraceability(lotId: number): Observable<LotTraceability> {
+    return this.http.get<LotTraceability>(`${this.apiUrl}/lot/${lotId}`).pipe(
+      map(dto => ({
+        ...dto,
+        cycleVie: (dto.cycleVie ?? []).map(event => ({
+          ...event,
+          etape: this.normalizeEtape(event.etape),
+        })),
+      })),
+    );
   }
 
-  getMockLotLifecycle(): Observable<TraceabilityEvent[]> {
-    return of([...EXAMPLE_TRACEABILITY_JSON]);
+  getLotLifecycle(lotId: number): Observable<TraceabilityEvent[]> {
+    return this.getLotTraceability(lotId).pipe(map(dto => dto.cycleVie ?? []));
+  }
+
+  private normalizeEtape(value: string): TraceabilityEvent['etape'] {
+    const upper = String(value).toUpperCase();
+    if (upper.includes('LOT')) return 'LOT_OLIVES';
+    if (upper.includes('PESEE')) return 'PESEE';
+    if (upper.includes('PRODUCTION')) return 'PRODUCTION';
+    if (upper.includes('PRODUIT')) return 'PRODUIT_FINAL';
+    return 'STOCK';
   }
 }

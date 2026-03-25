@@ -18,10 +18,10 @@ export class LotListComponent implements OnInit {
   constructor(private lotManagementService: LotManagementService) {}
 
   ngOnInit(): void {
-    this.lotManagementService.loadInitialData().subscribe(() => {
-      this.lotManagementService.lots$.subscribe(data => {
-        this.lots = data;
-      });
+  this.lotManagementService.loadInitialData().subscribe(() => {
+    this.lotManagementService.lots$.subscribe(data => {
+      this.lots = data;
     });
-  }
+  });
+}
 }

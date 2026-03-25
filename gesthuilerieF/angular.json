@@ -69,7 +69,8 @@
               "buildTarget": "gesthuilerieF:build:production"
             },
             "development": {
-              "buildTarget": "gesthuilerieF:build:development"
+              "buildTarget": "gesthuilerieF:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

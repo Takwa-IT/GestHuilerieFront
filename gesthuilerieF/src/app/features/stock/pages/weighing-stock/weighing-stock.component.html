@@ -2,6 +2,7 @@
   <nb-card-header>Gestion avancee des pesees et lots</nb-card-header>
   <nb-card-body>
     <form class="entity-form" [formGroup]="weighingForm" (ngSubmit)="submitWeighing()">
+      <button type="submit">Enregistrer</button>
       <div class="form-group">
         <label class="form-label">Date pesee *</label>
         <input nbInput fullWidth type="datetime-local" formControlName="datePesee" />
@@ -115,7 +116,8 @@
             <td>{{ p.poidsTare }} kg</td>
             <td>{{ p.poidsNet }} kg</td>
             <td>
-              <button nbButton status="basic" ghost type="button" (click)="exportReceiptPdf(p)">Generer recu PDF</button>
+              <button nbButton status="basic" ghost type="button" (click)="exportReceiptPdf(p)">Generer recu
+                PDF</button>
             </td>
           </tr>
         </tbody>

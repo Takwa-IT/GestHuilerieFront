@@ -1,38 +1,46 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { Huilerie, EXAMPLE_HUILERIES_JSON } from '../models/enterprise.models';
+import { Observable } from 'rxjs';
+import { Huilerie } from '../models/enterprise.models';
+import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class HuilerieService {
-  private readonly apiUrl = 'http://localhost:8069/api/huileries';
+  private readonly apiUrl = `${environment.apiUrl}/huileries`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  // Example REST call: GET /api/huileries
-  getAll(): Observable<Huilerie[]> {
+  findAll(): Observable<Huilerie[]> {
     return this.http.get<Huilerie[]>(this.apiUrl);
   }
 
-  // Local mock data for UI prototyping.
-  getMock(): Observable<Huilerie[]> {
-    return of([...EXAMPLE_HUILERIES_JSON]);
+  getAll(): Observable<Huilerie[]> {
+    return this.findAll();
   }
 
-  // Example REST call: POST /api/huileries
-  create(payload: Omit<Huilerie, 'idHuilerie'>): Observable<Huilerie> {
+  create(payload: Huilerie): Observable<Huilerie> {
     return this.http.post<Huilerie>(this.apiUrl, payload);
   }
-
-  // Example REST call: PUT /api/huileries/:id
-  update(idHuilerie: number, payload: Partial<Huilerie>): Observable<Huilerie> {
+  update(idHuilerie: number, payload: Huilerie): Observable<Huilerie> {
     return this.http.put<Huilerie>(`${this.apiUrl}/${idHuilerie}`, payload);
   }
 
-  // Example REST call: PATCH /api/huileries/:id/status
-  toggleStatus(idHuilerie: number, active: boolean): Observable<Huilerie> {
-    return this.http.patch<Huilerie>(`${this.apiUrl}/${idHuilerie}/status`, { active });
+  findById(idHuilerie: number): Observable<Huilerie> {
+    return this.http.get<Huilerie>(`${this.apiUrl}/${idHuilerie}`);
+  }
+
+  activate(idHuilerie: number): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${idHuilerie}/activate`, {});
+  }
+
+  deactivate(idHuilerie: number): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${idHuilerie}/deactivate`, {});
+  }
+
+  toggleStatus(idHuilerie: number, active: boolean): Observable<void> {
+    return active ? this.activate(idHuilerie) : this.deactivate(idHuilerie);
   }
 }

@@ -60,7 +60,7 @@ export class QualityYieldComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.lotOlivesService.getMock().subscribe(data => {
+    this.lotOlivesService.getAll().subscribe((data: LotOlives[]) => {
       this.lots = data;
       if (this.lots.length > 0 && !this.selectedLotId) {
         this.selectedLotId = this.lots[0].idLot;
@@ -68,10 +68,6 @@ export class QualityYieldComponent implements OnInit {
           this.loadAnalysesForLot(this.selectedLotId);
         }
       }
-    });
-
-    this.analysisService.getMock().subscribe(data => {
-      this.analyses = data;
     });
   }
 
@@ -86,18 +82,18 @@ export class QualityYieldComponent implements OnInit {
       this.lots = this.lots.map(l =>
         l.idLot === this.editingLotId
           ? {
-              ...l,
-              varieteOlive: payload.varieteOlive ?? l.varieteOlive,
-              maturite: payload.maturite ?? l.maturite,
-              origine: payload.origine ?? l.origine,
-              dateRecolte: payload.dateRecolte ?? l.dateRecolte,
-              dateReception: payload.dateReception ?? l.dateReception,
-              dureeStockageAvantBroyage: Number(payload.dureeStockageAvantBroyage),
-              quantiteInitiale: Number(payload.quantiteInitiale),
-              quantiteRestante: Number(payload.quantiteRestante),
-              matierePremiereId: Number(payload.matierePremiereId),
-              campagneId: Number(payload.campagneId),
-            }
+            ...l,
+            varieteOlive: payload.varieteOlive ?? l.varieteOlive,
+            maturite: payload.maturite ?? l.maturite,
+            origine: payload.origine ?? l.origine,
+            dateRecolte: payload.dateRecolte ?? l.dateRecolte,
+            dateReception: payload.dateReception ?? l.dateReception,
+            dureeStockageAvantBroyage: Number(payload.dureeStockageAvantBroyage),
+            quantiteInitiale: Number(payload.quantiteInitiale),
+            quantiteRestante: Number(payload.quantiteRestante),
+            matierePremiereId: Number(payload.matierePremiereId),
+            campagneId: Number(payload.campagneId),
+          }
           : l,
       );
     } else {
@@ -183,7 +179,7 @@ export class QualityYieldComponent implements OnInit {
     }
 
     const payload = this.analysisForm.getRawValue();
-    const qualiteClass = this.analysisService.classifyQuality(
+    const qualiteClass = this.classifyQuality(
       Number(payload.acidite ?? 0),
       Number(payload.indicePeroxyde ?? 0),
       Number(payload.k232 ?? 0),
@@ -194,14 +190,14 @@ export class QualityYieldComponent implements OnInit {
       this.analyses = this.analyses.map(a =>
         a.idAnalyse === this.editingAnalysisId
           ? {
-              ...a,
-              acidite: Number(payload.acidite ?? 0),
-              indicePeroxyde: Number(payload.indicePeroxyde ?? 0),
-              k232: Number(payload.k232 ?? 0),
-              k270: Number(payload.k270 ?? 0),
-              classeQualiteFinale: qualiteClass,
-              dateAnalyse: new Date().toISOString().split('T')[0],
-            }
+            ...a,
+            acidite: Number(payload.acidite ?? 0),
+            indicePeroxyde: Number(payload.indicePeroxyde ?? 0),
+            k232: Number(payload.k232 ?? 0),
+            k270: Number(payload.k270 ?? 0),
+            classeQualiteFinale: qualiteClass,
+            dateAnalyse: new Date().toISOString().split('T')[0],
+          }
           : a,
       );
     } else {
@@ -268,5 +264,19 @@ export class QualityYieldComponent implements OnInit {
     if (qualite === 'B+') return 'warning';
     if (qualite === 'B') return 'warning';
     return 'danger';
+  }
+
+  private classifyQuality(acidite: number, indicePeroxyde: number, k232: number, k270: number): string {
+    // Classification based on standard olive oil quality criteria
+    if (acidite <= 0.8 && indicePeroxyde <= 20 && k232 <= 2.5 && k270 <= 0.25) {
+      return 'A'; // Extra Virgin
+    }
+    if (acidite <= 2 && indicePeroxyde <= 60 && k232 <= 2.7 && k270 <= 0.30) {
+      return 'A-'; // Virgin
+    }
+    if (acidite <= 3.3 && indicePeroxyde <= 150) {
+      return 'B+'; // Lampante Virgin
+    }
+    return 'B'; // Lampante
   }
 }
